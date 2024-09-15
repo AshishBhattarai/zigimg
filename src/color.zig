@@ -321,7 +321,7 @@ fn RgbMethods(
 fn RgbaMethods(comptime Self: type) type {
     return struct {
         const T = std.meta.fieldInfo(Self, .r).type;
-        const comp_bits = @typeInfo(T).Int.bits;
+        const comp_bits = @typeInfo(T).int.bits;
 
         pub fn initRgba(r: T, g: T, b: T, a: T) Self {
             return Self{
