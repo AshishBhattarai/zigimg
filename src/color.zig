@@ -395,7 +395,7 @@ fn ToMethods(
     return packed struct(u0) {
         const To = @This();
 
-        fn getSelf(to: *const To) *align(1) const T {
+        fn getSelf(to: anytype) *align(1) const T {
             // @fieldParentPtr is broken for packed structs.
             // See: https://github.com/ziglang/zig/issues/20458
             if (@typeInfo(T).@"struct".layout == .@"packed") {
@@ -408,11 +408,11 @@ fn ToMethods(
         }
 
         /// Assumes the target color type has `FromMethods` for it.
-        pub fn color(to: *const To, ColorT: type) ColorT {
+        pub fn color(to: anytype, ColorT: type) ColorT {
             return ColorT.from.color(to.getSelf().*);
         }
 
-        pub fn u32Rgba(to: *const To) u32 {
+        pub fn u32Rgba(to: anytype) u32 {
             const self = to.getSelf();
             return @as(u32, toU8(self.r)) << 24 |
                 @as(u32, toU8(self.g)) << 16 |
@@ -420,7 +420,7 @@ fn ToMethods(
                 if (has_alpha) toU8(self.a) else 0xff;
         }
 
-        pub fn u32Rgb(to: *const To) u32 {
+        pub fn u32Rgb(to: anytype) u32 {
             const self = to.getSelf();
             return @as(u32, toU8(self.r)) << 16 |
                 @as(u32, toU8(self.g)) << 8 |
@@ -461,7 +461,7 @@ fn ToMethods(
             };
         }
 
-        pub fn float4(to: *const To) math.float4 {
+        pub fn float4(to: anytype) math.float4 {
             const self = to.getSelf();
 
             return .{
